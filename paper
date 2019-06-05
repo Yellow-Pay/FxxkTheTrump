@@ -1,0 +1,47 @@
+#1: Individual NF acceleration: Offloading 
+	# Discussion
+	Historically, the Click modular router has laid the foundation for a programmable router  framework,  and  follow-up  work  has  improved Click’s performance.
+	"DoubleClick" has demonstrated the potential of computation batching.
+	"Snap" adds GPU-offloading abstractions to Click. ["NBA"]
+
+	["ApSys 2012"] "DoubleClick": The Power of Batching in the Click Modular Router 
+	The Click modular router has been one of the most popular software router platforms for rapid prototyping and new protocol development. Unfortunately, its internal architecture has not caught up with recent hardware advancements, and the performance remains sub-optimal in high-speed networks despite its benefit of flexible module composition.
+	In this work, we identify the performance bottlenecks of the existing Click router and extend it to scale with modern computer systems. Our improvements "focus on both I/O and computation batching", and "include various optimizations for multi-core systems and multi-queue network cards".
+	We find that these techniques improve the performance by almost a factor of 10, and the maximum throughput reaches 28 Gbps of minimum-sized IPv4 packet forwarding speed on a single machine.
+
+	["ANCS 2013"] "Snap":Fast and flexible: Parallel packet processing with GPUs and click
+	We introduce Snap, a framework for packet processing that "outperforms traditional software routers" by "exploiting the parallelism available on modern GPUs". 
+	While obtaining high performance, it remains extremely flexible, with packet processing tasks implemented as simple modular elements that are composed to build fully functional routers and switches. 
+	Snap is based on the Click modular router, which it extends by adding new architectural features that support batched packet processing, memory structures optimized for offloading to coprocessors, and asynchronous scheduling with in-order completion. 
+	We show that Snap "can run complex pipelines at high speeds on commodity PC hardware" by building an IP router incorporating both an IDS-like full-packet string matcher and an SDN-like packet classifier. 
+	In this configuration, Snap "is able to forward 40 million packets per second, saturating four 10 Gbps NICs at packet sizes as small as 128 byes". This represents "an increase in throughput of nearly 4x" over the baseline Click running comparable elements on the CPU.	
+
+	# Discussion
+	Recent extensions to Click, e.g., "NBA" and "ClickNP", have looked at how to implement optimized Click elements through the use of GPUs (NBA) and FPGAs (ClickNP). While offloading functionality to such devices can yield great performance improvements, this is orthogonal to our work. ["NetBricks"]
+
+	["EuroSys 2015"] "NBA" (Network  Balancing  Act) - A  High-performance  Packet  Processing  Framework for  Heterogeneous  Processors
+	We present the NBA "framework", which extends the architecture  of  the  Click  modular  router  to  exploit  modern  hardware,  adapts  to  different  hardware  configurations, and  reaches  close  to  their  maximum  performance  without  manual  optimization.
+	NBA  "takes  advantages  of  existing  performance-excavating  solutions  such  as  batch  processing, NUMA-aware memory management, and receive-side scaling with multi-queue network cards". 
+	Its abstraction "resembles  Click  but  also  hides  the  details  of  architecture-specific optimization, batch processing that handles the path diversity  of  individual  packets,  CPU/GPU  load  balancing, and complex hardware resource mappings due to multi-core CPUs and multi-queue network cards". 
+	We have implemented four  sample  applications: an  IPv4  and  an  IPv6  router, an IPsec encryption gateway, and an intrusion detection system (IDS)  with  Aho-Corasik  and  regular  expression  matching. 
+	The IPv4/IPv6 router "performance reaches the line rate on a  commodity  80  Gbps  machine, and  the  performances  of the IPsec gateway and the IDS reaches above 30 Gbps".
+	We also show that "our adaptive CPU/GPU load balancer reaches near-optimal throughput in various combinations of sample applications and traffic conditions".
+	 In this work we propose a software-based packet process-ing framework called NBA (Network Balancing Act). It exploits the latest  hardware advances, but encapsulates their low-level specifics.
+	 
+
+	["SIGCOMM 2016"] "ClickNP": Highly Flexible and High Performance Network Processing with Reconfigurable Hardware
+	ClickNP proposes to offload software logic onto programmable hardware (e.g. FPGA) to accelerate individual NFs. 
+	Our prototype NFs show that they can process traffic at up to 200 million packets per second with ultra-low latency (< 2μs). Compared to existing software counterparts, with FPGA, ClickNP improves throughput by 10x, while reducing latency by 10x. To the best of our knowledge, ClickNP is the first FPGA-accelerated platform for NFs, written completely in high-level language and achieving 40 Gbps line rate at any packet size.
+	
+	["OSDI 2016"] "NetBricks": Taking the V out of NFV
+	NetBricks [47] abandons VMs or containers, and runs NFs on a single CPU core to improve NF performance.
+	The move from hardware middleboxes to software network functions, as advocated by NFV, has proven more challenging than expected. Developing new NFs remains a tedious process, requiring that developers repeatedly rediscover and reapply the same set of optimizations, while current techniques for providing isolation between NFs (using	VMs or containers) incur high performance overheads.
+#2: Packet delivery acceleration: 
+	Intel DPDK [30], 
+	ClickOS [38] and 
+	NetVM [28, 64] optimize packet delivery from the network interface cards (NICs) to VMs, and between VMs. 
+#3: NF modularization: 
+	OpenBox [7] modularizes NFs (which is also proposed in [2, 46, 60]) and improves overall performance by sharing common building blocks between NFs and chaining the remaining blocks together.
+
+
+
