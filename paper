@@ -17,6 +17,17 @@
 	In this configuration, Snap "is able to forward 40 million packets per second, saturating four 10 Gbps NICs at packet sizes as small as 128 byes". This represents "an increase in throughput of nearly 4x" over the baseline Click running comparable elements on the CPU.	
 
 	# Discussion
+	Here has also been a long line of work on "developing network applications on specialized networking hardware" including "NPUs" ["HotSDN 2013"], "FPGAs" ["NetFPGA"] and "programmable switches" ["SIGCOMM 2013"]. 
+	Recent work including "P4" and "Packet Transactions" have looked at "providing high level programming tools for such hardware".
+	Our work focuses on network programming for general purpose CPUs and is complementary to this work. ["NetBricks"]
+
+	["HotSDN 2013"] Protocol-Oblivious Forwarding: Unleash the Power of SDN through a Future-Proof Forwarding Plane
+	["In Workshop on Programmable routers for extensible services of tomorrow, 2008"] "NetFPGA": Reusable Router Architecture for Experimental Research
+	["SIGCOMM 2013"] Forwarding Metamorphosis: Fast Programmable Match-Action Processing in Hardware for SDN
+	["SIGCOMM 2014"] "P4": Programming Protocol-Independent Packet Processors
+	["SIGCOMM 2016"] "Packet Transactions": High-Level Programming for Line-Rate Switches
+
+	# Discussion
 	Recent extensions to Click, e.g., "NBA" and "ClickNP", have looked at how to implement optimized Click elements through the use of GPUs (NBA) and FPGAs (ClickNP). While offloading functionality to such devices can yield great performance improvements, this is orthogonal to our work. ["NetBricks"]
 
 	["EuroSys 2015"] "NBA" (Network  Balancing  Act) - A  High-performance  Packet  Processing  Framework for  Heterogeneous  Processors
@@ -27,7 +38,6 @@
 	The IPv4/IPv6 router "performance reaches the line rate on a  commodity  80  Gbps  machine, and  the  performances  of the IPsec gateway and the IDS reaches above 30 Gbps".
 	We also show that "our adaptive CPU/GPU load balancer reaches near-optimal throughput in various combinations of sample applications and traffic conditions".
 	 In this work we propose a software-based packet process-ing framework called NBA (Network Balancing Act). It exploits the latest  hardware advances, but encapsulates their low-level specifics.
-	 
 
 	["SIGCOMM 2016"] "ClickNP": Highly Flexible and High Performance Network Processing with Reconfigurable Hardware
 	ClickNP proposes to offload software logic onto programmable hardware (e.g. FPGA) to accelerate individual NFs. 
@@ -36,6 +46,7 @@
 	["OSDI 2016"] "NetBricks": Taking the V out of NFV
 	NetBricks [47] abandons VMs or containers, and runs NFs on a single CPU core to improve NF performance.
 	The move from hardware middleboxes to software network functions, as advocated by NFV, has proven more challenging than expected. Developing new NFs remains a tedious process, requiring that developers repeatedly rediscover and reapply the same set of optimizations, while current techniques for providing isolation between NFs (using	VMs or containers) incur high performance overheads.
+
 #2: Packet delivery acceleration: 
 	Intel DPDK [30], 
 	ClickOS [38] and 
