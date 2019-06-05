@@ -72,6 +72,39 @@
 	NetBricks [47] abandons VMs or containers, and runs NFs on a single CPU core to improve NF performance.
 	The move from hardware middleboxes to software network functions, as advocated by NFV, has proven more challenging than expected. Developing new NFs remains a tedious process, requiring that developers repeatedly rediscover and reapply the same set of optimizations, while current techniques for providing isolation between NFs (using	VMs or containers) incur high performance overheads.
 
+	# Discussion - Accelerate IPsec using special purpose hardware 
+	Many studies have been done to "accelerate IPsec using special purpose hardware". 
+	Ha et al. ["Asia-Pacific Conference on Advanced System Integrated Circuits 2014"] propose an "ASIC design of IPsec hardware accelerator". Its estimated throughput is 200 Mbps. 
+	Hodjat et al. ["ITCC 2004"] propose a "specialized cryptographic coprocessor to accelerate AES processing". The throughput of the AES coprocessor is 3.43 Gbps. 
+	Dandalis et al. ["TODAES 2004"], Chodowiec et al. ["ISC 2001"], and Kakarountas et al. ["The Journal of Supercomputing 2006"] implement "IPsec solutions with FPGAs". The FPGA implementation of SHA-1 from Kakarountas et al. achieves a throughput up to 4.2 Gbps. 
+	Thoguluva et al. ["DATE 2008"] implemen "IPsec on a mobile application processor SoC that contains a programmable security processor". The IPsec implementation offloads cryptographic algorithms to the security processor. Its performance is up to 8 Mbps. 
+	Meng et al. ["INTRUST 2010"] propose "a high-performance network processor solution for IPsec using Cavium OCTEON CN58XX". Their implementation achieves 20 Gbps with packets of 1024B. ["PIPSEA"]
+
+	["Asia-Pacific Conference on Advanced System Integrated Circuits 2014"] ASIC design of IPSec hardware accelerator for network security
+	["ITCC 2004"] Architectural Design Features of a Programmable High Throughput AES Coprocessor
+	["TODAES 2004"] An Adaptive Cryptographic Engine for Internet Protocol Security Architectures
+	["ISC 2001"] Experimental Testing of the Gigabit IPSec-Compliant Implementations of Rijndael and Triple DES Using SLAAC-1V FPGA Accelerator Board
+	["The Journal of Supercomputing 2006"] High-Speed FPGA Implementation of Secure Hash Algorithm for IPSec and VPN Applications
+	["DATE 2008"] Efficient Software Architecture for IPSec Acceleration Using a Programmable Security Processor
+	["INTRUST 2010"] Towards High-performance IPsec on Cavium OCTEON Platform
+
+	["CCS 2016"] "PIPSEA": A Practical IPsec Gateway on Embedded APUs ["Cons of CPU/GPU"] 
+	Accelerated Processing Unit (APU) is a heterogeneous multicore processor that contains general-purpose CPU cores and a GPU in a single chip. It also supports Heterogeneous System Architecture (HSA) that provides coherent physically-shared memory between the CPU and the GPU. 
+	In this paper, we present the "design and implementation of a high-performance IPsec gateway" using "a low-cost commodity embedded APU". 
+	The "HSA supported by the APUs eliminates the data copy overhead between the CPU and the GPU" [cons of CPU/GPU], which is "unavoidable in the previous discrete GPU approaches". 
+	The gateway is implemented in OpenCL to exploit the GPU and uses zero-copy packet I/O APIs in DPDK. 
+	The IPsec gateway handles the real-world network traffic where each packet has a different workload. 
+	The proposed packet scheduling algorithm significantly improves GPU utilization for such traffic. 
+	It works not only for APUs but also for discrete GPUs. 
+	With three CPU cores and one GPU in the APU, the IPsec gateway "achieves a throughput of 10.36 Gbps with an average latency of 2.79 ms" to perform AES-CBC+HMAC-SHA1 for incoming packets of 1024 bytes.
+
+	["IWSSIP 2017"] FPGA implementation of IPsec protocol suite for multigigabit networks
+	The paper presents the hardware implementation of IPsec gateway in FPGA.
+
+	["2012 International Conference on Reconfigurable Computing and FPGAs"] IPSECCO: A Lightweight and Reconfigurable IPSec Core
+	In this paper we propose a "reconfigurable lightweight Internet Protocol Security (IPSec) hardware core".
+	Our architecture supports the main IPSec protocols; namely Authentication Header (AH), Encapsulating Security Payload(ESP), and Internet Key Exchange (IKE). In this work, the cryptographic algorithms and their modes of operation, which are at the heart of the IPSec protocols, are implemented in hardware. Instead of re-implementing common IPSec configurations, which are deemed “too heavy” for pervasive devices, we evaluate efficient implementations of standardized and/or well-known lightweight and hardware-friendly algorithms. In particular, we examine different versions of PRESENT, GRØSTL, PHOTON, and a very compact ECC core. As a consequence, we present IPSECCO, a core with adequate security and only moderate	resource requirements, making it suitable for lightweight devices. We selected the Xilinx Spartan family of Field Programmable	Gate Arrays ("FPGA") as target platform due its low-power	footprint and reduced costs compared to other FPGAs. Our results show that it is possible to realize a high performance IPSec core even on members of the Spartan-3 family.
+
 #2: Packet delivery acceleration: 
 	Intel DPDK [30], 
 	ClickOS [38] and 
