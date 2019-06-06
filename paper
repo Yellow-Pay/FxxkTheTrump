@@ -103,14 +103,59 @@
 
 	["2012 International Conference on Reconfigurable Computing and FPGAs"] IPSECCO: A Lightweight and Reconfigurable IPSec Core
 	In this paper we propose a "reconfigurable lightweight Internet Protocol Security (IPSec) hardware core".
-	Our architecture supports the main IPSec protocols; namely Authentication Header (AH), Encapsulating Security Payload(ESP), and Internet Key Exchange (IKE). In this work, the cryptographic algorithms and their modes of operation, which are at the heart of the IPSec protocols, are implemented in hardware. Instead of re-implementing common IPSec configurations, which are deemed “too heavy” for pervasive devices, we evaluate efficient implementations of standardized and/or well-known lightweight and hardware-friendly algorithms. In particular, we examine different versions of PRESENT, GRØSTL, PHOTON, and a very compact ECC core. As a consequence, we present IPSECCO, a core with adequate security and only moderate	resource requirements, making it suitable for lightweight devices. We selected the Xilinx Spartan family of Field Programmable	Gate Arrays ("FPGA") as target platform due its low-power	footprint and reduced costs compared to other FPGAs. Our results show that it is possible to realize a high performance IPSec core even on members of the Spartan-3 family.
+	Our architecture supports the main IPSec protocols; namely Authentication Header (AH), Encapsulating Security Payload(ESP), and Internet Key Exchange (IKE). In this work, the cryptographic algorithms and their modes of operation, which are at the heart of the IPSec protocols, are implemented in hardware. Instead of re-implementing common IPSec configurations, which are deemed “too heavy” for pervasive devices, we evaluate efficient implementations of standardized and/or well-known lightweight and hardware-friendly algorithms. In particular, we examine different versions of PRESENT, GRØSTL, PHOTON, and a very compact ECC core. As a consequence, we present IPSECCO, a core with adequate security and only moderate	resource requirements, making it suitable for lightweight devices. We selected the Xilinx Spartan family of Field Programmable	Gate Arrays ("FPGA") as target platform due its low-power footprint and reduced costs compared to other FPGAs. Our results show that it is possible to realize a high performance IPSec core even on members of the Spartan-3 family.
 
 #2: Packet delivery acceleration: 
-	Intel DPDK [30], 
-	ClickOS [38] and 
-	NetVM [28, 64] optimize packet delivery from the network interface cards (NICs) to VMs, and between VMs. 
+	#Discussion
+	Several	NFV researches are about how to design high-performance, virtualized "software middlebox" platform["ClickOS"] 
+	Intel DPDK, ClickOS and	NetVM optimize packet delivery from the network interface cards (NICs) to VMs, and between VMs. 
+
+	["NSDI 2014"] "ClickOS" and the Art of Network Function Virtualization
+	Over the years "middleboxes" have become a fundamental part of today’s networks. 
+	Despite their usefulness, they come with a number of problems, many of which arise from the fact that they are "hardware-based: they are costly, difficult to manage, and their functionality is hard or impossible to change, to name a few".
+	To address these issues, there is a recent trend towards network function virtualization(NFV), in essence proposing to "turn these middleboxes into software-based, virtualized entities". 
+	Towards this goal we introduce "ClickOS", "a high-performance, virtualized software middlebox platform". 
+	ClickOS virtual machines are small (5MB), boot quickly (about 30 milliseconds), add little delay (45 microseconds) and over one hundred of them can be concurrently run while saturating a 10Gb pipe on a commodity server. 
+	We further implement a wide range of middleboxes including a firewall, a carrier-grade NAT and a loadbalancer and show that ClickOS can handle packets in the millions per second.
+	
+	["NSDI 2014"] "NetVM": High Performance and Flexible Networking Using Virtualization on Commodity Platforms
+	"NetVM" brings virtualization to the Network by "enabling high bandwidth network functions" to operate at near line speed, while "taking advantage of the flexibility and customization of low cost" commodity servers. 
+	NetVM allows customizable data plane processing capabilities such as firewalls, proxies, and routers to be embedded within virtual machines, complementing the control plane capabilities of Software Defined Networking. 
+	NetVM makes it easy to dynamically scale, deploy, and reprogram network functions. 
+	This "provides far greater flexibility" than existing purpose-built, sometimes proprietary hardware, while still allowing complex policies and full packet inspection to determine subsequent processing. It does so with dramatically higher throughput than existing software router platforms. 
+	NetVM is "built on top of the KVM platform and Intel DPDK library".
+	We detail many of the challenges we have solved such as adding support for high-speed inter-VM communication through shared huge pages and enhancing the CPU scheduler to prevent overheads caused by inter-core communication and context switching. 
+	NetVM allows "true zero-copy delivery of data to VMs" both for packet processing and messaging among VMs within a trust boundary.
+	Our evaluation shows how NetVM can compose complex network functionality from multiple pipelined VMs and still obtain throughputs up to 10 Gbps, an improvement of more than 250% compared to existing techniques that use SR-IOV for virtualized networking.
+
+	DPDK - low latency packet processing software framework
+
 #3: NF modularization: 
 	OpenBox [7] modularizes NFs (which is also proposed in [2, 46, 60]) and improves overall performance by sharing common building blocks between NFs and chaining the remaining blocks together.
 
+	["SIGCOMM 2016"] "OpenBox": A Software-Defined Framework for Developing, Deploying, and Managing Network Functions
+	We present "OpenBox" — a "software-defined framework" for network-wide development, deployment, and management of network functions (NFs).
+	OpenBox effectively "decouples the control plane of NFs from their data plane", similarly to SDN solutions that only address the network’s forwarding plane.
+	OpenBox consists of three logic components.
+	First, user-defined OpenBox applications provide NF specifications through the OpenBox north-bound API.
+	Second, a logically-centralized OpenBox controller is able to merge logic of multiple NFs, possibly from multiple tenants, and to use a network-wide view to efficiently deploy and scale NFs across  the network data plane.
+	Finally, OpenBox instances constitute OpenBox’s data plane and are implemented either purely in software or contain specific hardware accelerators (e.g., a TCAM). 
+	In practice, different NFs carry out similar processing steps on the same packet, and our experiments indeed show a significant improvement of the network performance when using OpenBox.
+	Moreover, OpenBox readily supports smart NF placement, NF scaling, and multi-tenancy through its controller.
 
+	# Conclusion
+	Hardware:
+	Cons: costly, difficult to manage, functionality is hard/impossible to change
+	Pros: high performance
 
+	Software: 
+	Cons: suffer high latency
+	Pros: offer low cost, high availability and high flexibility 
+
+	Developing network applications on specialized networking hardware
+	Providing high level programming tools
+	Offloading some funcionality to hardware
+	e.g. 
+	The "HSA supported by the APUs eliminates the data copy overhead between the CPU and the GPU" [cons of CPU/GPU], which is "unavoidable in the previous discrete GPU approaches". 
+
+	GPU/CPU/APU/NPU - cache locality on NUMA - FPGA - ... 
